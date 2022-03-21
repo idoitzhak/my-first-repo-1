@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const bcryptjs = require('bcryptjs');
  
 let userx =[];
 
-router.post('/register', (request,response) => {
+router.post('/register', async (request,response) => {
 
     const { email,password } = request.body;
 
@@ -14,7 +15,10 @@ router.post('/register', (request,response) => {
         });
     }
     else{
-    userx.push({email:email, password:password});
+
+        const hash_password = await bcryptjs.hash(password,10);
+
+    userx.push({email:email, password:hash_password});
     return response.status(200).json({
         message: `Account created`,
         user_count: userx.length,
