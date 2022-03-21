@@ -1,28 +1,26 @@
 const express = require('express');
 const router = express.Router();
-
-let users = [];
+ 
+let userx =[];
 
 router.post('/register', (request,response) => {
 
-    //const user_email = request.body.email;
-    //const user_password = request.body.password;
     const { email,password } = request.body;
 
-    users.push({email:email, password:password});
-
+    const account = userx.find(x => x.email == email);
+    if(account){
+        return response.status(200).json({
+            message: `User exist`
+        });
+    }
+    else{
+    userx.push({email:email, password:password});
     return response.status(200).json({
-        message: users
-    });
-
+        message: `Account created`,
+        user_count: userx.length,
+        data: userx        
+        });
+    }
 })
-
-router.get('/greeting', (request,response) => {
-    return response.status(200).json({
-        message: 'Welcome to my node.js API'
-    });
-});
-
-
 
 module.exports = router;
